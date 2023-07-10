@@ -9,7 +9,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ElmahCore.Diagnostics.Mssql\ElmahCore.Diagnostics.Mssql.csproj" />
-    <ProjectReference Include="..\ElmahCore.WebUI\ElmahCore.WebUI.csproj" />
+    <ProjectReference Include="..\ElmahCore.WebUi\ElmahCore.WebUi.csproj" />
   </ItemGroup>
 
 </Project>

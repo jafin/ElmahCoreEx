@@ -2,13 +2,20 @@ using ElmahCore;
 using ElmahCore.DemoCore6;
 using ElmahCore.Mvc;
 using ElmahCore.Observer.Mssql;
-using BuilderHelper = ElmahCore.WebUI.BuilderHelper;
+using BuilderHelper = ElmahCore.WebUi.BuilderHelper;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
-BuilderHelper.AddElmah<XmlFileErrorLog>(builder.Services, options =>
+builder.Services.AddElmah<XmlFileErrorLog>(options =>
+{
+    options.LogPath = "~/log";
+    options.Notifiers.Add(new MyNotifier());
+    options.Filters.Add(new CmsErrorLogFilter());
+});
+
+BuilderHelper.AddElmahWebUi<XmlFileErrorLog>(builder.Services, options =>
 {
     options.LogPath = "~/log";
     options.Notifiers.Add(new MyNotifier());

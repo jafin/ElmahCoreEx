@@ -26,7 +26,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ElmahCore.Mvc.Tests", "Test
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ElmahCore.DemoCore6", "ElmahCore.DemoCore6\ElmahCore.DemoCore6.csproj", "{BF17E6CC-ECC6-4FAE-A821-3BE169E5A3D8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ElmahCore.WebUI", "ElmahCore.WebUI\ElmahCore.WebUI.csproj", "{6E234BBE-F89A-4D18-B3E8-5D31A3226E3E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ElmahCore.WebUi", "ElmahCore.WebUi\ElmahCore.WebUi.csproj", "{6E234BBE-F89A-4D18-B3E8-5D31A3226E3E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ElmahCore.Diagnostics.Mssql", "ElmahCore.Diagnostics.Mssql\ElmahCore.Diagnostics.Mssql.csproj", "{D1659F4E-FB46-4377-B50C-86DE173EA47E}"
 EndProject
