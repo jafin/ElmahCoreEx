@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Xml;
 using ElmahCore.Assertions;
 using ElmahCore.Mvc;
+using ElmahCore.Mvc.Middleware;
 using ElmahCore.WebUi.Handlers;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
@@ -187,9 +188,9 @@ namespace ElmahCore.WebUi
 
                 context.Features.Set<IElmahFeature>(new ElmahFeature(id, location));
 
-                //To next middleware
+                // To next middleware
                 if (!ShowDebugPage) throw;
-                //Show Debug page
+                // Show Debug page
                 context.Response.Redirect(location);
             }
         }

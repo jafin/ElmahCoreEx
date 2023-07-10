@@ -1,6 +1,7 @@
 using ElmahCore;
 using ElmahCore.DemoCore6;
 using ElmahCore.Mvc;
+using ElmahCore.Mvc.Observers;
 using ElmahCore.Observer.Mssql;
 using BuilderHelper = ElmahCore.WebUi.BuilderHelper;
 

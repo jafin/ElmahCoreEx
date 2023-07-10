@@ -6,22 +6,10 @@ using System.Net;
 
 namespace ElmahCore.Mvc
 {
-    internal class SourceInfo
-    {
-        public string Type { get; set; }
-
-        public string Method { get; set; }
-
-        public string Source { get; set; }
-
-        public int Line { get; set; }
-    }
-
     internal static class ErrorDetailHelper
     {
         //TODO: Dangerous no expiration policy. Should be replaced with LRU cache
-        private static readonly Dictionary<string, StackFrameSourceCodeInfo> Cache =
-            new Dictionary<string, StackFrameSourceCodeInfo>();
+        private static readonly Dictionary<string, StackFrameSourceCodeInfo> Cache = new();
 
         // make it internal to enable unit testing
         internal static StackFrameSourceCodeInfo GetStackFrameSourceCodeInfo(string[] sourcePath, string method,
@@ -30,11 +18,9 @@ namespace ElmahCore.Mvc
             bool useCache = false;
 
             var key = $"{method}:{type}:{filePath}:{lineNumber}";
-            
+
             if (useCache)
             {
-                
-                
                 lock (Cache)
                 {
                     if (Cache.TryGetValue(key, out var info)) return info;
@@ -210,21 +196,5 @@ namespace ElmahCore.Mvc
                 ? WebUtility.HtmlEncode(txt)
                 : string.Empty);
         }
-    }
-
-    public struct HtmlChunk
-    {
-        public HtmlChunk(int index, int end, string html)
-        {
-            Index = index;
-            End = end;
-            Html = html;
-        }
-
-        public int Index { get; set; }
-
-        public int End { get; set; }
-
-        public string Html { get; set; }
     }
 }

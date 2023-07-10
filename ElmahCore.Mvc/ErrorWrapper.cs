@@ -31,7 +31,7 @@ namespace ElmahCore.Mvc
         public ErrorWrapper(Error error, string[] sourcePath)
         {
             _error = error ?? throw new ArgumentNullException(nameof(error));
-            bool markUpStackTrace = true; //may want to config toggle this in future, possible memory leak?
+            var markUpStackTrace = true; //may want to config toggle this in future, possible memory leak?
             if (markUpStackTrace)
             {
                 var (markup, srcList) = ErrorDetailHelper.MarkupStackTrace(_error.Detail);
@@ -200,13 +200,13 @@ namespace ElmahCore.Mvc
             .Where(i => i.StartsWith("User_"))
             .ToSerializableDictionary(k => k.Substring("User_".Length), k => _error.ServerVariables[k]);
 
-        private static string[] keyWords = { "User_", "Header_", "Connection_", "Items_", "Session_" };
+        private static string[] _keyWords = { "User_", "Header_", "Connection_", "Items_", "Session_" };
 
         public SerializableDictionary<string, string> ServerVariables
         {
             get
             {
-                return _error.ServerVariables.AllKeys.Where(i => !keyWords.Any(i.StartsWith))
+                return _error.ServerVariables.AllKeys.Where(i => !_keyWords.Any(i.StartsWith))
                     .ToSerializableDictionary(k => k, k => _error.ServerVariables[k]);
             }
         }

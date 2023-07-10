@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace ElmahCore.Mvc
+namespace ElmahCore.Mvc.Observers
 {
     public sealed class ElmahDiagnosticObserver : IObserver<DiagnosticListener>
     {

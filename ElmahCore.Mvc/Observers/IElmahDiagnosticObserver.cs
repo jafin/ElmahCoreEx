@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace ElmahCore.Mvc;
+namespace ElmahCore.Mvc.Observers;
 
 public interface IElmahDiagnosticObserver : IObserver<KeyValuePair<string, object>>
 {

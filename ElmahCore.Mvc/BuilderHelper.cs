@@ -1,6 +1,7 @@
 using System;
 using System.Diagnostics;
 using ElmahCore.Mvc.Logger;
+using ElmahCore.Mvc.Observers;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;

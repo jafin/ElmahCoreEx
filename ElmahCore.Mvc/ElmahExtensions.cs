@@ -3,6 +3,7 @@ using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using ElmahCore.Mvc;
 using ElmahCore.Mvc.Exceptions;
+using ElmahCore.Mvc.Middleware;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Http;
 

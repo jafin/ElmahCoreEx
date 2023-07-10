@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
 using ElmahCore.Assertions;
+using ElmahCore.Mvc.Middleware;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -36,7 +37,7 @@ namespace ElmahCore.Mvc
             "text/markdown"
         };
 
-        private readonly string _elmahRoot = @"~/elmah";
+        private readonly string _elmahRoot = "~/elmah";
         private readonly ErrorLog _errorLog;
         private readonly List<IErrorFilter> _filters = new();
         private readonly ILogger _logger;
@@ -81,20 +82,18 @@ namespace ElmahCore.Mvc
                     _logger.LogError("Error in filters XML file");
                 }
 
-            if (elmahOptions.Value != null)
+            if (elmahOptions.Value == null) return;
+            if (!string.IsNullOrEmpty(options.Path))
             {
-                if (!string.IsNullOrEmpty(options.Path))
-                {
-                    _elmahRoot = elmahOptions.Value.Path.ToLower();
-                    if (!_elmahRoot.StartsWith("/") && !_elmahRoot.StartsWith("~/")) _elmahRoot = "/" + _elmahRoot;
-                    if (_elmahRoot.EndsWith("/")) _elmahRoot = _elmahRoot.Substring(0, _elmahRoot.Length - 1);
-                }
-
-                if (!string.IsNullOrWhiteSpace(options.ApplicationName))
-                    _errorLog.ApplicationName = elmahOptions.Value.ApplicationName;
-                if (options.SourcePaths != null && options.SourcePaths.Any())
-                    _errorLog.SourcePaths = elmahOptions.Value.SourcePaths;
+                _elmahRoot = elmahOptions.Value.Path.ToLower();
+                if (!_elmahRoot.StartsWith("/") && !_elmahRoot.StartsWith("~/")) _elmahRoot = "/" + _elmahRoot;
+                if (_elmahRoot.EndsWith("/")) _elmahRoot = _elmahRoot[..^1];
             }
+
+            if (!string.IsNullOrWhiteSpace(options.ApplicationName))
+                _errorLog.ApplicationName = elmahOptions.Value.ApplicationName;
+            if (options.SourcePaths != null && options.SourcePaths.Any())
+                _errorLog.SourcePaths = elmahOptions.Value.SourcePaths;
         }
 
         public event ExceptionFilterEventHandler Filtering;
@@ -107,29 +106,26 @@ namespace ElmahCore.Mvc
             var doc = new XmlDocument();
             doc.Load(config);
             var filterNodes = doc.SelectNodes("//errorFilter");
-            if (filterNodes != null)
-                foreach (XmlNode filterNode in filterNodes)
+            if (filterNodes == null) return;
+            foreach (XmlNode filterNode in filterNodes)
+            {
+                var notList = new List<string>();
+                var notifiers = filterNode.SelectNodes("//notifier");
                 {
-                    var notList = new List<string>();
-                    var notifiers = filterNode.SelectNodes("//notifier");
-                    {
-                        if (notifiers != null)
-                            foreach (XmlElement notifier in notifiers)
-                            {
-                                var name = notifier.Attributes["name"]?.Value;
-                                if (name != null) notList.Add(name);
-                            }
-                    }
-                    var assertionNode = (XmlElement)filterNode.SelectSingleNode("test/*");
-
-                    if (assertionNode != null)
-                    {
-                        var a = AssertionFactory.Create(assertionNode);
-                        var filter = new ErrorFilter(a, notList);
-                        Filtering += filter.OnErrorModuleFiltering;
-                        _filters.Add(filter);
-                    }
+                    if (notifiers != null)
+                        foreach (XmlElement notifier in notifiers)
+                        {
+                            var name = notifier.Attributes["name"]?.Value;
+                            if (name != null) notList.Add(name);
+                        }
                 }
+                var assertionNode = (XmlElement)filterNode.SelectSingleNode("test/*");
+                if (assertionNode == null) continue;
+                var a = AssertionFactory.Create(assertionNode);
+                var filter = new ErrorFilter(a, notList);
+                Filtering += filter.OnErrorModuleFiltering;
+                _filters.Add(filter);
+            }
         }
 
         public async Task InvokeAsync(HttpContext context)
@@ -299,7 +295,7 @@ namespace ElmahCore.Mvc
                 var id = await log.LogAsync(error);
                 entry = new ErrorLogEntry(log, id, error);
 
-                //Send notification
+                // Send notification
                 foreach (var notifier in _notifiers)
                     if (!args.DismissedNotifiers.Any(i =>
                             i.Equals(notifier.Name, StringComparison.InvariantCultureIgnoreCase)))

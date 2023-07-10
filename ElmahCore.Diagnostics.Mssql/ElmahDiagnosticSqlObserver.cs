@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using ElmahCore.Mvc;
+using ElmahCore.Mvc.Observers;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Data.SqlClient;
