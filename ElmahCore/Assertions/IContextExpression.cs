@@ -1,7 +1,6 @@
-namespace ElmahCore.Assertions
+namespace ElmahCore.Assertions;
+
+public interface IContextExpression
 {
-    public interface IContextExpression
-    {
-        object Evaluate(object context);
-    }
+    object Evaluate(object context);
 }

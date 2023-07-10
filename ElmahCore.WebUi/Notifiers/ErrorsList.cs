@@ -1,10 +1,9 @@
 ﻿using System.Collections.Generic;
 
-namespace ElmahCore.WebUi.Notifiers
+namespace ElmahCore.WebUi.Notifiers;
+
+internal class ErrorsList
 {
-    internal class ErrorsList
-    {
-        public List<ErrorLogEntryWrapper> Errors { get; set; }
-        public int TotalCount { get; set; }
-    }
+    public List<ErrorLogEntryWrapper> Errors { get; set; }
+    public int TotalCount { get; set; }
 }
