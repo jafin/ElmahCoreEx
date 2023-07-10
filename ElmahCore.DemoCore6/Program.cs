@@ -19,8 +19,6 @@ builder.Services.AddElmah<XmlFileErrorLog>(options =>
 BuilderHelper.AddElmahWebUi<XmlFileErrorLog>(builder.Services, options =>
 {
     options.LogPath = "~/log";
-    options.Notifiers.Add(new MyNotifier());
-    options.Filters.Add(new CmsErrorLogFilter());
 });
 
 // Add any diagnostic observers.
@@ -31,7 +29,7 @@ var app = builder.Build();
 var svcTest = app.Services.GetServices<IElmahDiagnosticObserver>();
 
 // Configure the HTTP request pipeline.
-BuilderHelper.UseElmahExceptionPage(app);
+app.UseElmahExceptionPage();
 
 if (!app.Environment.IsDevelopment())
 {
